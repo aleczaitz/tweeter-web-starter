@@ -4,7 +4,7 @@ import { UserInfoContext, UserInfoActionsContext } from "./UserInfoContexts";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthToken, FakeData, User } from "tweeter-shared";
-import { useMessageActions } from "../toaster/Messagehooks";
+import { useMessageActions } from "../toaster/MessageHooks";
 
 const UserInfo = () => {
   const [isFollower, setIsFollower] = useState(false);

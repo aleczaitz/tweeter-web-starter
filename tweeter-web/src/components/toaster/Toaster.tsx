@@ -1,7 +1,7 @@
 import "./Toaster.css";
 import { useEffect } from "react";
 import { Toast } from "react-bootstrap";
-import { useMessageActions, useMessageList } from "./Messagehooks";
+import { useMessageActions, useMessageList } from "./MessageHooks";
 
 interface Props {
   position: string;

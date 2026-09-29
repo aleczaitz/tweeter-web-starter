@@ -6,7 +6,7 @@ import {
 import { AuthToken, FakeData, Status, User } from "tweeter-shared";
 import { Link, useNavigate } from "react-router-dom";
 import Post from "./Post";
-import { useMessageActions } from "../toaster/Messagehooks";
+import { useMessageActions } from "../toaster/MessageHooks";
 
 interface Props {
   item: Status;
@@ -35,9 +35,7 @@ const StatusItem = (props: Props) => {
         }
       }
     } catch (error) {
-      displayErrorMessage(
-        `Failed to get user because of exception: ${error}`,
-      );
+      displayErrorMessage(`Failed to get user because of exception: ${error}`);
     }
   };
 

@@ -1,5 +1,5 @@
 import OAuth from "./OAuth";
-import { useMessageActions } from "../toaster/Messagehooks";
+import { useMessageActions } from "../toaster/MessageHooks";
 
 interface Props {
   headingText: string;
@@ -17,11 +17,7 @@ const AuthenticationFormLayout = (props: Props) => {
   const { displayInfoMessage } = useMessageActions();
 
   const displayInfoMessageWithDarkBackground = (message: string): void => {
-    displayInfoMessage(
-      message,
-      3000,
-      "text-white bg-primary",
-    );
+    displayInfoMessage(message, 3000, "text-white bg-primary");
   };
 
   return (

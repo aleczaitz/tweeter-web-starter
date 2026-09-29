@@ -8,17 +8,18 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Image from "react-bootstrap/Image";
 import { AuthToken } from "tweeter-shared";
-import { useMessageActions } from "../toaster/Messagehooks";
+import { useMessageActions } from "../toaster/MessageHooks";
 
 const AppNavbar = () => {
   const location = useLocation();
   const { authToken, displayedUser } = useContext(UserInfoContext);
   const { clearUserInfo } = useContext(UserInfoActionsContext);
   const navigate = useNavigate();
-  const { displayInfoMessage, displayErrorMessage, deleteMessage } = useMessageActions();
+  const { displayInfoMessage, displayErrorMessage, deleteMessage } =
+    useMessageActions();
 
   const logOut = async () => {
-    const loggingOutToastId = displayInfoMessage( "Logging Out...", 0);
+    const loggingOutToastId = displayInfoMessage("Logging Out...", 0);
 
     try {
       await logout(authToken!);

@@ -6,7 +6,7 @@ import {
   UserInfoActionsContext,
   UserInfoContext,
 } from "../userInfo/UserInfoContexts";
-import { useMessageActions } from "../toaster/Messagehooks";
+import { useMessageActions } from "../toaster/MessageHooks";
 
 interface Props {
   user: User;
