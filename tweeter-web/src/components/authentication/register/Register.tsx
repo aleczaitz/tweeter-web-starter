@@ -62,7 +62,7 @@ const Register = () => {
 
         const bytes: Uint8Array = Buffer.from(
           imageStringBase64BufferContents,
-          "base64"
+          "base64",
         );
 
         setImageBytes(bytes);
@@ -94,7 +94,7 @@ const Register = () => {
         alias,
         password,
         imageBytes,
-        imageFileExtension
+        imageFileExtension,
       );
 
       updateUserInfo(user, user, authToken, rememberMe);
@@ -103,7 +103,7 @@ const Register = () => {
       displayToast(
         ToastType.Error,
         `Failed to register user because of exception: ${error}`,
-        0
+        0,
       );
     } finally {
       setIsLoading(false);
@@ -116,7 +116,7 @@ const Register = () => {
     alias: string,
     password: string,
     userImageBytes: Uint8Array,
-    imageFileExtension: string
+    imageFileExtension: string,
   ): Promise<[User, AuthToken]> => {
     // Not neded now, but will be needed when you make the request to the server in milestone 3
     const imageStringBase64: string =
