@@ -6,7 +6,7 @@ import {
   UserInfoActionsContext,
   UserInfoContext,
 } from "../userInfo/UserInfoContexts";
-import { ToastActionsContext } from "../toaster/ToastContexts";
+import { useMessageActions } from "../toaster/Messagehooks";
 
 interface Props {
   user: User;
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const UserItem = (props: Props) => {
-  const { displayToast } = useContext(ToastActionsContext);
+  const { displayErrorMessage } = useMessageActions();
   const { displayedUser, authToken } = useContext(UserInfoContext);
   const { setDisplayedUser } = useContext(UserInfoActionsContext);
 
@@ -35,11 +35,7 @@ const UserItem = (props: Props) => {
         }
       }
     } catch (error) {
-      displayToast(
-        ToastType.Error,
-        `Failed to get user because of exception: ${error}`,
-        0,
-      );
+      displayErrorMessage(`Failed to get user because of exception: ${error}`);
     }
   };
 

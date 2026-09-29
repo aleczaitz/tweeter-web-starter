@@ -4,10 +4,9 @@ import {
   UserInfoActionsContext,
 } from "../userInfo/UserInfoContexts";
 import { AuthToken, FakeData, Status, User } from "tweeter-shared";
-import { ToastActionsContext } from "../toaster/ToastContexts";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastType } from "../toaster/Toast";
 import Post from "./Post";
+import { useMessageActions } from "../toaster/Messagehooks";
 
 interface Props {
   item: Status;
@@ -15,7 +14,7 @@ interface Props {
 }
 
 const StatusItem = (props: Props) => {
-  const { displayToast } = useContext(ToastActionsContext);
+  const { displayErrorMessage } = useMessageActions();
   const navigate = useNavigate();
 
   const { displayedUser, authToken } = useContext(UserInfoContext);
@@ -36,10 +35,8 @@ const StatusItem = (props: Props) => {
         }
       }
     } catch (error) {
-      displayToast(
-        ToastType.Error,
+      displayErrorMessage(
         `Failed to get user because of exception: ${error}`,
-        0,
       );
     }
   };
