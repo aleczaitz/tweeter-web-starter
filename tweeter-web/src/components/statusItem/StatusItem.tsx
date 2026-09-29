@@ -1,12 +1,8 @@
-import { useContext } from "react";
-import {
-  UserInfoContext,
-  UserInfoActionsContext,
-} from "../userInfo/UserInfoContexts";
 import { AuthToken, FakeData, Status, User } from "tweeter-shared";
 import { Link, useNavigate } from "react-router-dom";
 import Post from "./Post";
 import { useMessageActions } from "../toaster/MessageHooks";
+import { useUserInfo, useUserInfoActions } from "../userInfo/UserHooks";
 
 interface Props {
   item: Status;
@@ -17,8 +13,8 @@ const StatusItem = (props: Props) => {
   const { displayErrorMessage } = useMessageActions();
   const navigate = useNavigate();
 
-  const { displayedUser, authToken } = useContext(UserInfoContext);
-  const { setDisplayedUser } = useContext(UserInfoActionsContext);
+  const { displayedUser, authToken } = useUserInfo();
+  const { setDisplayedUser } = useUserInfoActions();
 
   const navigateToUser = async (event: React.MouseEvent): Promise<void> => {
     event.preventDefault();
