@@ -7,7 +7,7 @@ interface Props {
 }
 
 const OAuth = (props: Props) => {
-  return (
+  return ( // TODO: remove duplicate buttons
     <div className="text-center mb-3">
       <button
         type="button"
