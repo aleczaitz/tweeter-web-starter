@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 import StatusItem from "../statusItem/StatusItem";
 import { useMessageActions } from "../toaster/MessageHooks";
 import { useUserInfo, useUserInfoActions } from "../userInfo/UserHooks";
-import { useUserNavigation } from "../userInfo/useUserNavigation";
 import {
   StatusItemPresenter,
   StatusItemView,
