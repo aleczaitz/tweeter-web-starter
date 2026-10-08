@@ -12,8 +12,11 @@ export interface UserInfoView {
     setFolloweeCount: (count: number) => void;
     setFollowerCount: (count: number) => void;
     setIsLoading: (isLoading: boolean) => void;
-    displayedUser: User;
-    authToken: AuthToken;
+    setDisplayedUser: (user: User) => void;
+    navigate: (url: string) => void;
+    displayedUser: User | null;
+    currentUser: User | null;
+    authToken: AuthToken | null;
 }
 
 export class UserInfoPresenter {
@@ -110,29 +113,29 @@ export class UserInfoPresenter {
       );
 
       const [followerCount, followeeCount] = await this.followService.unfollow(
-        authToken!,
-        displayedUser!,
+        this.view.authToken!,
+        this.view.displayedUser!,
       );
 
-      setIsFollower(false);
-      setFollowerCount(followerCount);
-      setFolloweeCount(followeeCount);
+      this.view.setIsFollower(false);
+      this.view.setFollowerCount(followerCount);
+      this.view.setFolloweeCount(followeeCount);
     } catch (error) {
-      displayErrorMessage(
+      this.view.displayErrorMessage(
         `Failed to unfollow user because of exception: ${error}`,
       );
     } finally {
-      deleteMessage(unfollowingUserToast);
-      setIsLoading(false);
+      this.view.deleteMessage(unfollowingUserToast);
+      this.view.setIsLoading(false);
     }
   };
 
-  private switchToLoggedInUser(): void {
-    setDisplayedUser(currentUser!);
-    navigate(`${getBaseUrl()}/${currentUser!.alias}`);
+  public switchToLoggedInUser(): void {
+    this.view.setDisplayedUser(this.view.currentUser!);
+    this.view.navigate(`${this.getBaseUrl()}/${this.view.currentUser!.alias}`);
   };
 
-  private getBaseUrl(): string {
+  public getBaseUrl(): string {
     const segments = location.pathname.split("/@");
     return segments.length > 1 ? segments[0] : "/";
   };

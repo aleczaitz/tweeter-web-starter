@@ -1,9 +1,9 @@
 import "./UserInfoComponent.css";
 import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { AuthToken, FakeData, User } from "tweeter-shared";
+import { Link, useNavigate } from "react-router-dom";
 import { useMessageActions } from "../toaster/MessageHooks";
 import { useUserInfo, useUserInfoActions } from "./UserHooks";
+import { UserInfoPresenter, UserInfoView } from "../../presenter/UserInfoPresenter";
 
 const UserInfo = () => {
   const [isFollower, setIsFollower] = useState(false);
@@ -17,16 +17,32 @@ const UserInfo = () => {
   const { currentUser, authToken, displayedUser } = useUserInfo();
   const { setDisplayedUser } = useUserInfoActions();
   const navigate = useNavigate();
-  const location = useLocation();
+
+  const listener: UserInfoView = {
+    setIsFollower,
+    displayErrorMessage,
+    displayInfoMessage,
+    deleteMessage,
+    setFolloweeCount,
+    setFollowerCount,
+    setIsLoading,
+    setDisplayedUser,
+    navigate,
+    displayedUser,
+    currentUser,
+    authToken
+  }
+
+  const presenter = new UserInfoPresenter(listener);
 
   if (!displayedUser) {
     setDisplayedUser(currentUser!);
   }
 
   useEffect(() => {
-    setIsFollowerStatus(authToken!, currentUser!, displayedUser!);
-    setNumbFollowees(authToken!, displayedUser!);
-    setNumbFollowers(authToken!, displayedUser!);
+    presenter.setIsFollowerStatus(authToken!, currentUser!, displayedUser!);
+    presenter.setNumbFollowees(authToken!, displayedUser!);
+    presenter.setNumbFollowers(authToken!, displayedUser!);
   }, [displayedUser]);
 
   
