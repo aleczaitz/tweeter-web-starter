@@ -10,6 +10,8 @@ interface Props {
   children: React.ReactNode;
 }
 
+// we dont really need to tough this because most of it is react. React stuff
+// should just be kept within the view
 const UserInfoProvider: React.FC<Props> = ({ children }) => {
   const saveToLocalStorage = (
     currentUser: User,
