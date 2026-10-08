@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { AuthToken, User } from "tweeter-shared";
+import { User } from "tweeter-shared";
 import { useParams } from "react-router-dom";
 import UserItem from "../userItem/UserItem";
 import { useMessageActions } from "../toaster/MessageHooks";
@@ -41,11 +41,13 @@ const UserItemScroller = (props: Props) => {
       displayedUserAliasParam &&
       displayedUserAliasParam != displayedUser!.alias
     ) {
-      presenterRef.current!.getUser(authToken!, displayedUserAliasParam!).then((toUser) => {
-        if (toUser) {
-          setDisplayedUser(toUser);
-        }
-      });
+      presenterRef
+        .current!.getUser(authToken!, displayedUserAliasParam!)
+        .then((toUser) => {
+          if (toUser) {
+            setDisplayedUser(toUser);
+          }
+        });
     }
   }, [displayedUserAliasParam]);
 
