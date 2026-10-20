@@ -100,11 +100,9 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
       return this.followService.unfollow(
         this.view.authToken!,
         this.view.displayedUser!,
-      )
+      );
     }, "unfollow");
 
-
-    
     var unfollowingUserToast = "";
 
     try {
