@@ -61,7 +61,7 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
     var followingUserToast = "";
 
     try {
-      this.doFailureReportingOperation(async () => {
+      await this.doFailureReportingOperation(async () => {
         this.view.setIsLoading(true);
         followingUserToast = this.view.displayInfoMessage(
           `${operationDescription.charAt(0).toUpperCase() + operationDescription.slice(1)}ing ${this.view.displayedUser!.name}...`,
@@ -69,7 +69,6 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
         );
 
         const [followerCount, followeeCount] = await operation();
-
         this.view.setIsFollower(!this.view.isFollower);
         this.view.setFollowerCount(followerCount);
         this.view.setFolloweeCount(followeeCount);
