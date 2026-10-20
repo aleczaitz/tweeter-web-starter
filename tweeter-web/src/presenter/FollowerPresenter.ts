@@ -5,12 +5,7 @@ import { UserItemPresenter, UserItemView } from "./UserItemPresenter";
 export const PAGE_SIZE = 10;
 
 export class FollowerPresenter extends UserItemPresenter {
-  private service: FollowService;
-
-  public constructor(view: UserItemView) {
-    super(view);
-    this.service = new FollowService();
-  }
+  private service = new FollowService();
 
   public async loadMoreItems(authToken: AuthToken, userAlias: string) {
     this.doFailureReportingOperation(async () => {

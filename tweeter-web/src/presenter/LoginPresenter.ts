@@ -18,12 +18,7 @@ export interface LoginView extends View {
 }
 
 export class LoginPresenter extends Presenter<LoginView> {
-  userService: UserService;
-
-  constructor(view: LoginView) {
-    super(view);
-    this.userService = new UserService();
-  }
+  userService = new UserService();
 
   public async doLogin() {
     try {

@@ -11,12 +11,7 @@ export interface UserNavigationView extends View {
 }
 
 export class UserNavigationPresenter extends Presenter<UserNavigationView> {
-  userService: UserService;
-
-  public constructor(view: UserNavigationView) {
-    super(view);
-    this.userService = new UserService();
-  }
+  userService = new UserService();
 
   navigateToUser = async (event: React.MouseEvent): Promise<void> => {
     event.preventDefault();
@@ -35,7 +30,7 @@ export class UserNavigationPresenter extends Presenter<UserNavigationView> {
           this.view.navigate(`${this.view.featureUrl}/${toUser.alias}`);
         }
       }
-    }, "get user");
+    }, "get user"); 
   };
 
   extractAlias = (value: string): string => {

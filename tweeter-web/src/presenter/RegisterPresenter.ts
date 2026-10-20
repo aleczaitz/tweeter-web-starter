@@ -25,12 +25,7 @@ export interface RegisterView extends View {
 }
 
 export class RegisterPresenter extends Presenter<RegisterView> {
-  userService: UserService;
-
-  constructor(view: RegisterView) {
-    super(view);
-    this.userService = new UserService();
-  }
+  userService: UserService = new UserService();
 
   public handleImageFile(file: File | undefined) {
     if (file) {

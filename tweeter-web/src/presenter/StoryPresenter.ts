@@ -5,12 +5,7 @@ import { StatusItemPresenter, StatusItemView } from "./StatusItemPresenter";
 const PAGE_SIZE = 10;
 
 export class StoryPresenter extends StatusItemPresenter {
-  private service: StatusService;
-
-  public constructor(view: StatusItemView) {
-    super(view);
-    this.service = new StatusService();
-  }
+  private service = new StatusService();
 
   public async loadMoreItems(authToken: AuthToken, userAlias: string) {
     this.doFailureReportingOperation(async () => {

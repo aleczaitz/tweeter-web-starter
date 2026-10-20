@@ -1,4 +1,4 @@
-import { AuthToken, User, FakeData, Follow } from "tweeter-shared";
+import { AuthToken, User } from "tweeter-shared";
 import { FollowService } from "../model.service/FollowService";
 import { MessageView, Presenter } from "./Presenter";
 
@@ -15,12 +15,7 @@ export interface UserInfoView extends MessageView {
 }
 
 export class UserInfoPresenter extends Presenter<UserInfoView> {
-  followService: FollowService;
-
-  public constructor(view: UserInfoView) {
-    super(view);
-    this.followService = new FollowService();
-  }
+  followService: FollowService = new FollowService();
 
   // p
   public async setIsFollowerStatus(

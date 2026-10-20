@@ -9,12 +9,7 @@ export interface AppNavBarView extends MessageView {
 }
 
 export class AppNavBarPresenter extends Presenter<AppNavBarView> {
-  userService: UserService;
-
-  public constructor(view: AppNavBarView) {
-    super(view);
-    this.userService = new UserService();
-  }
+  userService = new UserService();
 
   public async logOut() {
     this.doFailureReportingOperation(async () => {

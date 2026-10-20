@@ -10,7 +10,7 @@ export interface MessageView extends View { // use this for components that use 
 export abstract class Presenter<V extends View> {
   _view: V;
 
-  protected constructor(view: V) {
+  public constructor(view: V) {
     this._view = view;
   }
 
