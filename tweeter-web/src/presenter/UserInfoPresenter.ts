@@ -1,31 +1,25 @@
 import { AuthToken, User, FakeData, Follow } from "tweeter-shared";
 import { FollowService } from "../model.service/FollowService";
+import { MessageView, Presenter } from "./Presenter";
 
-export interface UserInfoView {
-    setIsFollower: (isFollower: boolean) => void;
-    displayErrorMessage: (message: string) => string;
-    displayInfoMessage: (
-    message: string,
-    duration: number,
-  ) => string;
-    deleteMessage: (messageId: string) => void;
-    setFolloweeCount: (count: number) => void;
-    setFollowerCount: (count: number) => void;
-    setIsLoading: (isLoading: boolean) => void;
-    setDisplayedUser: (user: User) => void;
-    navigate: (url: string) => void;
-    displayedUser: User | null;
-    currentUser: User | null;
-    authToken: AuthToken | null;
+export interface UserInfoView extends MessageView {
+  setIsFollower: (isFollower: boolean) => void;
+  setFolloweeCount: (count: number) => void;
+  setFollowerCount: (count: number) => void;
+  setIsLoading: (isLoading: boolean) => void;
+  setDisplayedUser: (user: User) => void;
+  navigate: (url: string) => void;
+  displayedUser: User | null;
+  currentUser: User | null;
+  authToken: AuthToken | null;
 }
 
-export class UserInfoPresenter {
-  view: UserInfoView;
+export class UserInfoPresenter extends Presenter<UserInfoView> {
   followService: FollowService;
 
   public constructor(view: UserInfoView) {
-    this.view = view;
-    this.followService = new FollowService;
+    super(view);
+    this.followService = new FollowService();
   }
 
   // p
@@ -34,42 +28,37 @@ export class UserInfoPresenter {
     currentUser: User,
     displayedUser: User,
   ) {
-    try {
+    this.doFailureReportingOperation(async () => {
       if (currentUser === displayedUser) {
         this.view.setIsFollower(false);
       } else {
         this.view.setIsFollower(
-          await this.followService.getIsFollowerStatus(authToken!, currentUser!, displayedUser!),
+          await this.followService.getIsFollowerStatus(
+            authToken!,
+            currentUser!,
+            displayedUser!,
+          ),
         );
       }
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to determine follower status because of exception: ${error}`,
-      );
-    }
-  };
+    }, "determine follower status");
+  }
 
   // p
-  public async setNumbFollowees(authToken: AuthToken, displayedUser: User){
-    try {
-      this.view.setFolloweeCount(await this.followService.getFolloweeCount(authToken, displayedUser));
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to get followees count because of exception: ${error}`,
+  public async setNumbFollowees(authToken: AuthToken, displayedUser: User) {
+    this.doFailureReportingOperation(async () => {
+      this.view.setFolloweeCount(
+        await this.followService.getFolloweeCount(authToken, displayedUser),
       );
-    }
-  };
+    }, "get folowees count");
+  }
 
   // p
   public async setNumbFollowers(authToken: AuthToken, displayedUser: User) {
-    try {
-      this.view.setFollowerCount(await this.followService.getFollowerCount(authToken, displayedUser));
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to get followers count because of exception: ${error}`,
-      );
-    }
-  };
+    this.doFailureReportingOperation(async () => {}, "get followers count");
+    this.view.setFollowerCount(
+      await this.followService.getFollowerCount(authToken, displayedUser),
+    );
+  }
 
   // p
   public async followDisplayedUser(): Promise<void> {
@@ -98,11 +87,10 @@ export class UserInfoPresenter {
       this.view.deleteMessage(followingUserToast);
       this.view.setIsLoading(false);
     }
-  };
+  }
 
   // p
   public async unfollowDisplayedUser(): Promise<void> {
-
     var unfollowingUserToast = "";
 
     try {
@@ -128,15 +116,15 @@ export class UserInfoPresenter {
       this.view.deleteMessage(unfollowingUserToast);
       this.view.setIsLoading(false);
     }
-  };
+  }
 
   public switchToLoggedInUser(): void {
     this.view.setDisplayedUser(this.view.currentUser!);
     this.view.navigate(`${this.getBaseUrl()}/${this.view.currentUser!.alias}`);
-  };
+  }
 
   public getBaseUrl(): string {
     const segments = location.pathname.split("/@");
     return segments.length > 1 ? segments[0] : "/";
-  };
+  }
 }

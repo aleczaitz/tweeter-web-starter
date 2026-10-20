@@ -1,13 +1,13 @@
 import { Buffer } from "buffer";
 import { User, AuthToken } from "tweeter-shared";
 import { UserService } from "../model.service/UserService";
+import { Presenter, View } from "./Presenter";
 
-export interface RegisterView {
+export interface RegisterView extends View {
   setImageUrl: (url: string) => void;
   setImageBytes: (bytes: Uint8Array) => void;
   setImageFileExtension: (imageFileExtension: string) => void;
   setIsLoading: (isLoading: boolean) => void;
-  displayErrorMessage: (message: string) => string;
   navigate: (url: string) => void;
   updateUserInfo: (
     currentUser: User,
@@ -24,12 +24,11 @@ export interface RegisterView {
   imageFileExtension: string;
 }
 
-export class RegisterPresenter {
-  view: RegisterView;
+export class RegisterPresenter extends Presenter<RegisterView> {
   userService: UserService;
 
   constructor(view: RegisterView) {
-    this.view = view;
+    super(view);
     this.userService = new UserService();
   }
 
@@ -67,23 +66,21 @@ export class RegisterPresenter {
 
   public async doRegister() {
     try {
-      this.view.setIsLoading(true);
+      this.doFailureReportingOperation(async () => {
+        this.view.setIsLoading(true);
 
-      const [user, authToken] = await this.userService.register(
-        this.view.firstName,
-        this.view.lastName,
-        this.view.alias,
-        this.view.password,
-        this.view.imageBytes,
-        this.view.imageFileExtension,
-      );
+        const [user, authToken] = await this.userService.register(
+          this.view.firstName,
+          this.view.lastName,
+          this.view.alias,
+          this.view.password,
+          this.view.imageBytes,
+          this.view.imageFileExtension,
+        );
 
-      this.view.updateUserInfo(user, user, authToken, this.view.rememberMe);
-      this.view.navigate(`/feed/${user.alias}`);
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to register user because of exception: ${error}`,
-      );
+        this.view.updateUserInfo(user, user, authToken, this.view.rememberMe);
+        this.view.navigate(`/feed/${user.alias}`);
+      }, "register user");
     } finally {
       this.view.setIsLoading(false);
     }
