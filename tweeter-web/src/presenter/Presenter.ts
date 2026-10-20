@@ -1,10 +1,28 @@
+import { AuthToken, User } from "tweeter-shared";
+import { LoginView } from "./LoginPresenter";
+import { RegisterView } from "./RegisterPresenter";
+
 export interface View {
   displayErrorMessage: (message: string) => void;
 }
 
-export interface MessageView extends View { // use this for components that use all 3
+export interface MessageView extends View {
   displayInfoMessage: (message: string, duration: number) => string;
   deleteMessage: (messageId: string) => void;
+}
+
+export interface AuthenticationView extends View {
+  setIsLoading: (isLoading: boolean) => void;
+  navigate: (url: string) => void;
+  updateUserInfo: (
+    currentUser: User,
+    displayedUser: User | null,
+    authToken: AuthToken,
+    remember: boolean,
+  ) => void;
+  rememberMe: boolean;
+  alias: string;
+  password: string;
 }
 
 export abstract class Presenter<V extends View> {
@@ -28,6 +46,34 @@ export abstract class Presenter<V extends View> {
       this.view.displayErrorMessage(
         `Failed to ${operationDescription} because of exception: ${error}`,
       );
+    }
+  }
+
+  protected async doAuthenticationOperation<T extends AuthenticationView>(
+    operation: () => Promise<[User, AuthToken]>,
+    operationDescription: string,
+    authView: T,
+  ) {
+    try {
+      this.doFailureReportingOperation(async () => {
+        authView.setIsLoading(true);
+
+        const [user, authToken] = await operation();
+
+        authView.updateUserInfo(user, user, authToken, authView.rememberMe);
+
+        if (
+          "originalUrl" in authView &&
+          typeof authView.originalUrl === "string" &&
+          authView.originalUrl
+        ) {
+          authView.navigate(authView.originalUrl);
+        } else {
+          authView.navigate(`/feed/${user.alias}`);
+        }
+      }, operationDescription);
+    } finally {
+      authView.setIsLoading(false);
     }
   }
 }
