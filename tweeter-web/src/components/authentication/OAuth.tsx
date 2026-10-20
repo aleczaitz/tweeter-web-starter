@@ -1,98 +1,43 @@
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconName } from "@fortawesome/fontawesome-svg-core";
 
 interface Props {
   displayInfoMessage: (message: string) => void;
 }
 
+const providers: [IconName, string][] = [
+  ["google", "Google"],
+  ["facebook", "Facebook"],
+  ["twitter", "Twitter"],
+  ["linkedin", "LinkedIn"],
+  ["github", "Github"],
+];
+
 const OAuth = (props: Props) => {
-  return ( // TODO: remove duplicate buttons
+  return (
+    // TODO: remove duplicate buttons
     <div className="text-center mb-3">
-      <button
-        type="button"
-        className="btn btn-link btn-floating mx-1"
-        onClick={() =>
-          props.displayInfoMessage(
-            "Google registration is not implemented.",
-          )
-        }
-      >
-        <OverlayTrigger
-          placement="top"
-          overlay={<Tooltip id="googleTooltip">Google</Tooltip>}
+      {providers.map((provider, index) => (
+        <button
+          key={index}
+          type="button"
+          className="btn btn-link btn-floating mx-1"
+          onClick={() =>
+            props.displayInfoMessage(
+              `${provider[1]} registration is not implemented.`,
+            )
+          }
         >
-          <FontAwesomeIcon icon={["fab", "google"]} />
-        </OverlayTrigger>
-      </button>
-
-      <button
-        type="button"
-        className="btn btn-link btn-floating mx-1"
-        onClick={() =>
-          props.displayInfoMessage(
-            "Facebook registration is not implemented.",
-          )
-        }
-      >
-        <OverlayTrigger
-          placement="top"
-          overlay={<Tooltip id="facebookTooltip">Facebook</Tooltip>}
-        >
-          <FontAwesomeIcon icon={["fab", "facebook"]} />
-        </OverlayTrigger>
-      </button>
-
-      <button
-        type="button"
-        className="btn btn-link btn-floating mx-1"
-        onClick={() =>
-          props.displayInfoMessage(
-            "Twitter registration is not implemented.",
-          )
-        }
-      >
-        <OverlayTrigger
-          placement="top"
-          overlay={<Tooltip id="twitterTooltip">Twitter</Tooltip>}
-        >
-          <FontAwesomeIcon icon={["fab", "twitter"]} />
-        </OverlayTrigger>
-      </button>
-
-      <button
-        type="button"
-        className="btn btn-link btn-floating mx-1"
-        onClick={() =>
-          props.displayInfoMessage(
-            "LinkedIn registration is not implemented.",
-          )
-        }
-      >
-        <OverlayTrigger
-          placement="top"
-          overlay={<Tooltip id="linkedInTooltip">LinkedIn</Tooltip>}
-        >
-          <FontAwesomeIcon icon={["fab", "linkedin"]} />
-        </OverlayTrigger>
-      </button>
-
-      <button
-        type="button"
-        className="btn btn-link btn-floating mx-1"
-        onClick={() =>
-          props.displayInfoMessage(
-            "Github registration is not implemented.",
-          )
-        }
-      >
-        <OverlayTrigger
-          placement="top"
-          overlay={<Tooltip id="githubTooltip">GitHub</Tooltip>}
-        >
-          <FontAwesomeIcon icon={["fab", "github"]} />
-        </OverlayTrigger>
-      </button>
+          <OverlayTrigger
+            placement="top"
+            overlay={<Tooltip id={`${provider[0]}`}>{provider[1]}</Tooltip>}
+          >
+            <FontAwesomeIcon icon={["fab", provider[0]]} />
+          </OverlayTrigger>
+        </button>
+      ))}
     </div>
   );
 };
