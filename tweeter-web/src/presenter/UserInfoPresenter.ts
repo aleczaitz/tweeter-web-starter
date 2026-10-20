@@ -12,6 +12,7 @@ export interface UserInfoView extends MessageView {
   displayedUser: User | null;
   currentUser: User | null;
   authToken: AuthToken | null;
+  isFollower: boolean;
 }
 
 export class UserInfoPresenter extends Presenter<UserInfoView> {
@@ -55,28 +56,27 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
     );
   }
 
-  // p
-  public async followDisplayedUser(): Promise<void> {
+  private async doChangeFollowingForDisplayedUserOperation(
+    operation: () => Promise<[number, number]>,
+    operationDescription: string,
+  ): Promise<void> {
     var followingUserToast = "";
 
     try {
       this.view.setIsLoading(true);
       followingUserToast = this.view.displayInfoMessage(
-        `Following ${this.view.displayedUser!.name}...`, // String
+        `${operationDescription.charAt(0).toUpperCase() + operationDescription.slice(1)}ing ${this.view.displayedUser!.name}...`, // String
         0,
       );
 
-      const [followerCount, followeeCount] = await this.followService.follow( // follow vs unfollow
-        this.view.authToken!,
-        this.view.displayedUser!,
-      );
+      const [followerCount, followeeCount] = await operation();
 
-      this.view.setIsFollower(true); // boolean difference, maybe negate whatever exists
+      this.view.setIsFollower(!this.view.isFollower); // boolean difference, maybe negate whatever exists
       this.view.setFollowerCount(followerCount);
       this.view.setFolloweeCount(followeeCount);
     } catch (error) {
       this.view.displayErrorMessage(
-        `Failed to follow user because of exception: ${error}`, // string difference
+        `Failed to ${operationDescription} user because of exception: ${error}`, // string difference
       );
     } finally {
       this.view.deleteMessage(followingUserToast);
@@ -85,7 +85,26 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
   }
 
   // p
+  public async followDisplayedUser(): Promise<void> {
+    this.doChangeFollowingForDisplayedUserOperation(() => {
+      return this.followService.follow(
+        this.view.authToken!,
+        this.view.displayedUser!,
+      );
+    }, "follow");
+  }
+
+  // p
   public async unfollowDisplayedUser(): Promise<void> {
+    this.doChangeFollowingForDisplayedUserOperation(() => {
+      return this.followService.unfollow(
+        this.view.authToken!,
+        this.view.displayedUser!,
+      )
+    }, "unfollow");
+
+
+    
     var unfollowingUserToast = "";
 
     try {

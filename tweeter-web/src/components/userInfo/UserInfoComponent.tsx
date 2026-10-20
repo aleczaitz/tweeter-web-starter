@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useMessageActions } from "../toaster/MessageHooks";
 import { useUserInfo, useUserInfoActions } from "./UserHooks";
-import { UserInfoPresenter, UserInfoView } from "../../presenter/UserInfoPresenter";
+import {
+  UserInfoPresenter,
+  UserInfoView,
+} from "../../presenter/UserInfoPresenter";
 
 const UserInfo = () => {
   const [isFollower, setIsFollower] = useState(false);
@@ -30,8 +33,9 @@ const UserInfo = () => {
     navigate,
     displayedUser,
     currentUser,
-    authToken
-  }
+    authToken,
+    isFollower
+  };
 
   const presenter = new UserInfoPresenter(listener);
 
@@ -45,7 +49,6 @@ const UserInfo = () => {
     presenter.setNumbFollowers(authToken!, displayedUser!);
   }, [displayedUser]);
 
-  
   const switchToLoggedInUser = (event: React.MouseEvent): void => {
     event.preventDefault();
     presenter.switchToLoggedInUser();
@@ -54,14 +57,13 @@ const UserInfo = () => {
   const followDisplayedUser = async (
     event: React.MouseEvent,
   ): Promise<void> => {
-    presenter.followDisplayedUser()
+    presenter.followDisplayedUser();
   };
-
 
   const unfollowDisplayedUser = async (
     event: React.MouseEvent,
   ): Promise<void> => {
-    presenter.unfollowDisplayedUser()
+    presenter.unfollowDisplayedUser();
   };
 
   return (
