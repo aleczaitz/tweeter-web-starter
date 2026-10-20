@@ -102,32 +102,6 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
         this.view.displayedUser!,
       );
     }, "unfollow");
-
-    var unfollowingUserToast = "";
-
-    try {
-      this.view.setIsLoading(true);
-      unfollowingUserToast = this.view.displayInfoMessage(
-        `Unfollowing ${this.view.displayedUser!.name}...`,
-        0,
-      );
-
-      const [followerCount, followeeCount] = await this.followService.unfollow(
-        this.view.authToken!,
-        this.view.displayedUser!,
-      );
-
-      this.view.setIsFollower(false);
-      this.view.setFollowerCount(followerCount);
-      this.view.setFolloweeCount(followeeCount);
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to unfollow user because of exception: ${error}`,
-      );
-    } finally {
-      this.view.deleteMessage(unfollowingUserToast);
-      this.view.setIsLoading(false);
-    }
   }
 
   public switchToLoggedInUser(): void {
