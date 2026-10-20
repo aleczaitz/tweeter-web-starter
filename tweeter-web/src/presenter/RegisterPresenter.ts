@@ -1,7 +1,7 @@
 import { Buffer } from "buffer";
 import { User, AuthToken } from "tweeter-shared";
 import { UserService } from "../model.service/UserService";
-import { AuthenticationView, Presenter, View } from "./Presenter";
+import { AuthenticationView, Presenter } from "./Presenter";
 
 export interface RegisterView extends AuthenticationView {
   setImageUrl: (url: string) => void;

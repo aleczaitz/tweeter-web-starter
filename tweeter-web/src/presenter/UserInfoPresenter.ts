@@ -62,21 +62,21 @@ export class UserInfoPresenter extends Presenter<UserInfoView> {
     try {
       this.view.setIsLoading(true);
       followingUserToast = this.view.displayInfoMessage(
-        `Following ${this.view.displayedUser!.name}...`,
+        `Following ${this.view.displayedUser!.name}...`, // String
         0,
       );
 
-      const [followerCount, followeeCount] = await this.followService.follow(
+      const [followerCount, followeeCount] = await this.followService.follow( // follow vs unfollow
         this.view.authToken!,
         this.view.displayedUser!,
       );
 
-      this.view.setIsFollower(true);
+      this.view.setIsFollower(true); // boolean difference, maybe negate whatever exists
       this.view.setFollowerCount(followerCount);
       this.view.setFolloweeCount(followeeCount);
     } catch (error) {
       this.view.displayErrorMessage(
-        `Failed to follow user because of exception: ${error}`,
+        `Failed to follow user because of exception: ${error}`, // string difference
       );
     } finally {
       this.view.deleteMessage(followingUserToast);

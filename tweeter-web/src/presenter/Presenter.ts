@@ -1,6 +1,4 @@
 import { AuthToken, User } from "tweeter-shared";
-import { LoginView } from "./LoginPresenter";
-import { RegisterView } from "./RegisterPresenter";
 
 export interface View {
   displayErrorMessage: (message: string) => void;
