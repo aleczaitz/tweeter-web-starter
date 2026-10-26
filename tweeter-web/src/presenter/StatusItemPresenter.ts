@@ -6,4 +6,4 @@ export abstract class StatusItemPresenter extends PagedItemPresenter<Status, Sta
   protected serviceFactory(): StatusService {
     return new StatusService();
   }
-}
+} 
