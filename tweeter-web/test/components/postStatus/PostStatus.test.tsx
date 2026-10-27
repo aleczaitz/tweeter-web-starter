@@ -3,20 +3,36 @@ import { MemoryRouter } from "react-router-dom";
 import PostStatus from "../../../src/components/postStatus/PostStatus";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { anything, instance, verify } from "@typestrong/ts-mockito";
+import { instance, verify } from "@typestrong/ts-mockito";
 import { mock } from "@typestrong/ts-mockito";
 import { PostPresenter } from "../../../src/presenter/PostPresenter";
 import { User } from "tweeter-shared/dist/model/domain/User";
 import { AuthToken } from "tweeter-shared/dist/model/domain/AuthToken";
+import { useUserInfo } from "../../../src/components/userInfo/UserHooks";
 
 jest.mock("../../../src/components/userInfo/UserHooks", () => ({
-  useUserInfo: jest.fn(() => ({
-    currentUser: new User("firstName", "lastName", "alias", "imageUrl"),
-    authToken: new AuthToken("token", 12345),
-  })),
+  ...jest.requireActual("../../../src/components/userInfo/UserHooks"),
+  __esModule: true,
+  useUserInfo: jest.fn(),
 }));
 
+const mockUserInstance: User = new User(
+  "Alec",
+  "Zaitz",
+  "@alec",
+  "https://example.com/avatar.png",
+);
+
+const mockAuthTokenInstance = new AuthToken("token123", Date.now());
+
 describe("PostStatus component", () => {
+  beforeAll(() => {
+    (useUserInfo as jest.Mock).mockReturnValue({
+      currentUser: mockUserInstance,
+      authToken: mockAuthTokenInstance,
+    });
+  });
+
   it("starts with the Post Status and Clear buttons disabled", () => {
     const { postStatusButton, clearStatusButton } =
       renderPostStatusAndGetElement();
@@ -29,7 +45,7 @@ describe("PostStatus component", () => {
       renderPostStatusAndGetElement();
 
     await user.type(postStatusTextArea, "a");
-    
+
     expect(postStatusButton).toBeEnabled();
     expect(clearStatusButton).toBeEnabled();
   });
@@ -55,11 +71,11 @@ describe("PostStatus component", () => {
 
     const { postStatusButton, postStatusTextArea, user } =
       renderPostStatusAndGetElement(mockPresenterInstance);
-      
+
     await user.type(postStatusTextArea, post);
     await user.click(postStatusButton);
 
-    verify(mockPresenter.submitPost(post, anything(), anything())).once();
+    verify(mockPresenter.submitPost(post, mockUserInstance, mockAuthTokenInstance)).once();
   });
 });
 
@@ -71,9 +87,7 @@ function renderPostStatus(presenter?: PostPresenter) {
   );
 }
 
-function renderPostStatusAndGetElement(
-    presenter?: PostPresenter,
-) {
+function renderPostStatusAndGetElement(presenter?: PostPresenter) {
   const user = userEvent.setup();
 
   renderPostStatus(presenter);
