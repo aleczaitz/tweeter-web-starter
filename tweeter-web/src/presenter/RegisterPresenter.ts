@@ -7,10 +7,6 @@ export interface RegisterView extends AuthenticationView {
   setImageUrl: (url: string) => void;
   setImageBytes: (bytes: Uint8Array) => void;
   setImageFileExtension: (imageFileExtension: string) => void;
-  firstName: string;
-  lastName: string;
-  imageBytes: Uint8Array;
-  imageFileExtension: string;
 }
 
 export class RegisterPresenter extends Presenter<RegisterView> {
@@ -48,20 +44,29 @@ export class RegisterPresenter extends Presenter<RegisterView> {
     }
   }
 
-  public async doRegister() {
+  public async doRegister(
+    firstName: string,
+    lastName: string,
+    alias: string,
+    password: string,
+    imageBytes: Uint8Array,
+    imageFileExtension: string,
+    rememberMe: boolean,
+  ) {
     this.doAuthenticationOperation(
       async (): Promise<[User, AuthToken]> => {
         return this.userService.register(
-          this.view.firstName,
-          this.view.lastName,
-          this.view.alias,
-          this.view.password,
-          this.view.imageBytes,
-          this.view.imageFileExtension,
+          firstName,
+          lastName,
+          alias,
+          password,
+          imageBytes,
+          imageFileExtension,
         );
       },
       "register user",
       this.view,
+      rememberMe
     );
   }
 

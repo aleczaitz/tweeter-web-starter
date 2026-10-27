@@ -9,13 +9,14 @@ export interface LoginView extends AuthenticationView {
 export class LoginPresenter extends Presenter<LoginView> {
   userService = new UserService();
 
-  public async doLogin() {
+  public async doLogin(alias: string, password: string, rememberMe: boolean) {
     this.doAuthenticationOperation(
       (): Promise<[User, AuthToken]> => {
-        return this.userService.login(this.view.alias, this.view.password);
+        return this.userService.login(alias, password);
       },
       "log user in",
       this.view,
+      rememberMe
     );
   }
 }

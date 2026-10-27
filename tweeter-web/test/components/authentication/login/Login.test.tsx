@@ -6,7 +6,7 @@ import "@testing-library/jest-dom";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { LoginPresenter } from "../../../../src/presenter/LoginPresenter";
-import { instance, mock, verify, when } from "@typestrong/ts-mockito";
+import { anything, instance, mock, verify, when } from "@typestrong/ts-mockito";
 
 library.add(fab);
 
@@ -61,7 +61,7 @@ describe("Login component", () => {
     await fillInLoginFields(user, aliasField, passwordField)
     await user.click(signInButton);
 
-    verify(mockPresenter.doLogin()).once();
+    verify(mockPresenter.doLogin(aliasInput, passwordInput, anything())).once();
   });
 });
 

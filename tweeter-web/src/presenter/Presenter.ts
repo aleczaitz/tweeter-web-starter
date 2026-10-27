@@ -16,11 +16,8 @@ export interface AuthenticationView extends View {
     currentUser: User,
     displayedUser: User | null,
     authToken: AuthToken,
-    remember: boolean,
+    rememberMe: boolean,
   ) => void;
-  rememberMe: boolean;
-  alias: string;
-  password: string;
 }
 
 export abstract class Presenter<V extends View> {
@@ -51,6 +48,7 @@ export abstract class Presenter<V extends View> {
     operation: () => Promise<[User, AuthToken]>,
     operationDescription: string,
     authView: T,
+    rememberMe: boolean
   ) {
     try {
       this.doFailureReportingOperation(async () => {
@@ -58,7 +56,7 @@ export abstract class Presenter<V extends View> {
 
         const [user, authToken] = await operation();
 
-        authView.updateUserInfo(user, user, authToken, authView.rememberMe);
+        authView.updateUserInfo(user, user, authToken, rememberMe);
 
         if (
           "originalUrl" in authView &&

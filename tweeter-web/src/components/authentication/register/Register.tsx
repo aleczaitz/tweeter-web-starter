@@ -34,13 +34,6 @@ const Register = () => {
     displayErrorMessage,
     navigate,
     updateUserInfo,
-    rememberMe,
-    firstName,
-    lastName,
-    alias,
-    password,
-    imageBytes,
-    imageFileExtension,
   };
 
   const presenter = new RegisterPresenter(listener);
@@ -58,7 +51,15 @@ const Register = () => {
 
   const registerOnEnter = (event: React.KeyboardEvent<HTMLElement>) => {
     if (event.key == "Enter" && !checkSubmitButtonStatus()) {
-      presenter.doRegister();
+      presenter.doRegister(
+        firstName,
+        lastName,
+        alias,
+        password,
+        imageBytes,
+        imageFileExtension,
+        rememberMe,
+      );
     }
   };
 
@@ -138,7 +139,17 @@ const Register = () => {
       setRememberMe={setRememberMe}
       submitButtonDisabled={checkSubmitButtonStatus}
       isLoading={isLoading}
-      submit={() => presenter.doRegister()}
+      submit={() =>
+        presenter.doRegister(
+          firstName,
+          lastName,
+          alias,
+          password,
+          imageBytes,
+          imageFileExtension,
+          rememberMe,
+        )
+      }
     />
   );
 };

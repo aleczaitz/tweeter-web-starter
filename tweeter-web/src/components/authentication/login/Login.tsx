@@ -28,9 +28,6 @@ const Login = (props: Props) => {
     navigate,
     displayErrorMessage,
     updateUserInfo,
-    rememberMe,
-    alias,
-    password,
     originalUrl: props.originalUrl,
   };
 
@@ -49,7 +46,7 @@ const Login = (props: Props) => {
 
   const loginOnEnter = (event: React.KeyboardEvent<HTMLElement>) => {
     if (event.key == "Enter" && !checkSubmitButtonStatus()) {
-      presenterRef.current!.doLogin();
+      presenterRef.current!.doLogin(alias, password, rememberMe);
     }
   };
 
@@ -83,7 +80,7 @@ const Login = (props: Props) => {
       setRememberMe={setRememberMe}
       submitButtonDisabled={checkSubmitButtonStatus}
       isLoading={isLoading}
-      submit={() => presenterRef.current!.doLogin()}
+      submit={() => presenterRef.current!.doLogin(alias, password, rememberMe)}
     />
   );
 };
