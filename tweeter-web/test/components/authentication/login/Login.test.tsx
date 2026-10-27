@@ -6,13 +6,16 @@ import "@testing-library/jest-dom";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { LoginPresenter } from "../../../../src/presenter/LoginPresenter";
-import { instance, mock, verify } from "@typestrong/ts-mockito";
+import { instance, mock, verify, when } from "@typestrong/ts-mockito";
 
 library.add(fab);
 
+const aliasInput = "a";
+const passwordInput = "b";
+
 async function fillInLoginFields(user: UserEvent, aliasField: HTMLElement, passwordField: HTMLElement) {
-  await user.type(aliasField, "a");
-  await user.type(passwordField, "b");
+  await user.type(aliasField, aliasInput);
+  await user.type(passwordField, passwordInput);
 }
 
 describe("Login component", () => {
