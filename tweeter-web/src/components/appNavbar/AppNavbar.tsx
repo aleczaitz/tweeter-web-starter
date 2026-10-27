@@ -22,8 +22,7 @@ const AppNavbar = () => {
     displayErrorMessage,
     deleteMessage,
     clearUserInfo,
-    navigate,
-    authToken,
+    navigate
   };
 
   const presenter = new AppNavBarPresenter(listener);
@@ -105,7 +104,7 @@ const AppNavbar = () => {
             <Nav.Item>
               <NavLink
                 id="logout"
-                onClick={() => presenter.logOut()}
+                onClick={() => presenter.logOut(authToken!)}
                 to={location.pathname}
                 className={({ isActive }) =>
                   isActive ? "nav-link active" : "nav-link"
