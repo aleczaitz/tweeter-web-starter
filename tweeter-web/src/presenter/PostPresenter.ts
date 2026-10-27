@@ -5,6 +5,7 @@ import { MessageView, Presenter } from "./Presenter";
 export interface PostView extends MessageView {
   setIsLoading(isLoading: boolean): void;
   setPost(post: string): void;
+  presenter?: PostPresenter;
 }
 
 export class PostPresenter extends Presenter<PostView> {

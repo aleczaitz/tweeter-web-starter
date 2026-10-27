@@ -4,7 +4,7 @@ import { useMessageActions } from "../toaster/MessageHooks";
 import { useUserInfo } from "../userInfo/UserHooks";
 import { PostView, PostPresenter } from "../../presenter/PostPresenter";
 
-const PostStatus = () => {
+const PostStatus = (props: { presenter?: PostPresenter }) => {
   const { displayInfoMessage, displayErrorMessage, deleteMessage } =
     useMessageActions();
 
@@ -20,7 +20,7 @@ const PostStatus = () => {
     setPost,
   };
 
-  const presenter = new PostPresenter(listener);
+  const presenter = props.presenter ?? new PostPresenter(listener);
 
   const submitPost = async (event: React.MouseEvent) => {
     event.preventDefault();
@@ -41,6 +41,7 @@ const PostStatus = () => {
       <div className="form-group mb-3">
         <textarea
           className="form-control"
+          aria-label="post status input"
           id="postStatusTextArea"
           rows={10}
           placeholder="What's on your mind?"
@@ -53,6 +54,7 @@ const PostStatus = () => {
       <div className="form-group">
         <button
           id="postStatusButton"
+          aria-label="post status"
           className="btn btn-md btn-primary me-1"
           type="button"
           disabled={checkButtonStatus()}
@@ -71,6 +73,7 @@ const PostStatus = () => {
         </button>
         <button
           id="clearStatusButton"
+          aria-label="clear status"
           className="btn btn-md btn-secondary"
           type="button"
           disabled={checkButtonStatus()}
